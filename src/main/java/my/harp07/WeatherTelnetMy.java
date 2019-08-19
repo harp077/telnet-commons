@@ -5,6 +5,8 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.telnet.TelnetClient;
@@ -29,6 +31,11 @@ public final class WeatherTelnetMy {
                 new BufferedOutputStream(System.out));
         //StringUtils.
         IOUtils.toInputStream("rrr", Charset.defaultCharset());
+        try {
+            IOUtils.toString(System.in, Charset.defaultCharset());
+        } catch (IOException ex) {
+            Logger.getLogger(WeatherTelnetMy.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         try        {
             tc.disconnect();
