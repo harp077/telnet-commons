@@ -8,21 +8,25 @@ import org.apache.commons.net.io.Util;
 public final class IOUtilmy {
 
     public static void readWrite(
-             InputStream remoteInput, 
-            OutputStream remoteOutput,
-             InputStream localInput, 
-            OutputStream localOutput) {
+             InputStream farInput, 
+            OutputStream farOutput,
+             InputStream tutInput, 
+            OutputStream tutOutput) {
+        
+        Thread tutInput_to_farOutput,
+               farInput_to_tutOutput;
+        
+        // write may be only for output
+        // read  may be only for input
 
-        Thread reader, writer;
-
-        reader = new Thread() {
+        tutInput_to_farOutput = new Thread() {
             @Override
             public void run() {
                 int ch;
                 try {
-                    while (!interrupted() && (ch = localInput.read()) != -1) {
-                        remoteOutput.write(ch);
-                        remoteOutput.flush();
+                    while (!interrupted() && (ch = tutInput.read()) != -1) {
+                        farOutput.write(ch);
+                        farOutput.flush();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -30,11 +34,11 @@ public final class IOUtilmy {
             }
         };
 
-        writer = new Thread() {
+        farInput_to_tutOutput = new Thread() {
             @Override
             public void run() {
                 try {
-                    Util.copyStream(remoteInput, localOutput);
+                    Util.copyStream(farInput, tutOutput);
                 } catch (IOException e) {
                     e.printStackTrace();
                     System.exit(1);
@@ -42,13 +46,13 @@ public final class IOUtilmy {
             }
         };
 
-        writer.setPriority(Thread.currentThread().getPriority() + 1);
-        writer.start();
-        reader.setDaemon(true);
-        reader.start();
+        farInput_to_tutOutput.setPriority(Thread.currentThread().getPriority() + 1);
+        farInput_to_tutOutput.start();
+        tutInput_to_farOutput.setDaemon(true);
+        tutInput_to_farOutput.start();
         try {
-            writer.join();
-            reader.interrupt();
+            farInput_to_tutOutput.join();
+            tutInput_to_farOutput.interrupt();
         } catch (InterruptedException e) {
             // Ignored
         }
