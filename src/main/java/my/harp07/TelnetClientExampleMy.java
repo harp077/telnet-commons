@@ -23,26 +23,17 @@ public class TelnetClientExampleMy implements Runnable {
                 OutputStream outstr = tc.getOutputStream();
                 byte[] buff = new byte[1024];
                 int ret_read = 0;
+                
                 do {
                     try {
                         ret_read = System.in.read(buff);
+                        if (new String(buff).equals("exit")) end_loop = true;
                         if (ret_read > 0) {
-                            final String line = new String(buff, 0, ret_read); // deliberate use of default charset
-                            if (line.matches("^\\^[A-Z^]\\r?\\n?$")) {
-                                byte toSend = buff[1];
-                                if (toSend == '^') {
-                                    outstr.write(toSend);
-                                } else {
-                                    outstr.write(toSend - 'A' + 1);
-                                }
+                            try {
+                                outstr.write(buff, 0, ret_read);
                                 outstr.flush();
-                            } else {
-                                try {
-                                    outstr.write(buff, 0, ret_read);
-                                    outstr.flush();
-                                } catch (IOException e) {
-                                    end_loop = true;
-                                }
+                            } catch (IOException e) {
+                                end_loop = true;
                             }
                         }
                     } catch (IOException e) {
@@ -50,6 +41,7 @@ public class TelnetClientExampleMy implements Runnable {
                         end_loop = true;
                     }
                 } while ((ret_read > 0) && (end_loop == false));
+                
                 try {
                     tc.disconnect();
                 } catch (IOException e) {
