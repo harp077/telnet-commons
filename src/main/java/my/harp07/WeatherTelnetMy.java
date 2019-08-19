@@ -1,6 +1,8 @@
 
 package my.harp07;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import org.apache.commons.net.telnet.TelnetClient;
 
@@ -16,8 +18,11 @@ public final class WeatherTelnetMy {
             e.printStackTrace();
             System.exit(1);
         }
-        IOUtilmy.readWrite(tc.getInputStream(), tc.getOutputStream(),
-                         System.in, System.out);
+        IOUtilmy.readWrite(
+                new BufferedInputStream(tc.getInputStream()), 
+                new BufferedOutputStream(tc.getOutputStream()),
+                new BufferedInputStream(System.in), 
+                new BufferedOutputStream(System.out));
 
         try        {
             tc.disconnect();

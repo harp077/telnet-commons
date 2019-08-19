@@ -7,8 +7,11 @@ import org.apache.commons.net.io.Util;
 
 public final class IOUtilmy {
 
-    public static void readWrite(InputStream remoteInput, OutputStream remoteOutput,
-            InputStream localInput, OutputStream localOutput) {
+    public static void readWrite(
+             InputStream remoteInput, 
+            OutputStream remoteOutput,
+             InputStream localInput, 
+            OutputStream localOutput) {
 
         Thread reader, writer;
 
