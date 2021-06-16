@@ -12,7 +12,7 @@ public final class WeatherTelnetMy {
 
         TelnetClient tc = new TelnetClient();
         try        {
-            tc.connect("127.0.0.1", 23);
+            tc.connect("10.73.250.11", 23);
         }
         catch (IOException e)        {
             e.printStackTrace();

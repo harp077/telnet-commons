@@ -11,7 +11,8 @@ public class TelnetClientExampleMy implements Runnable {
 
     public static void main(String[] args) throws Exception {
 
-        String remoteip = "127.0.0.1";
+        String remoteip = "10.73.250.43"
+                + "";
         int remoteport = 23;
         tc = new TelnetClient("VT100");
         while (true) {
