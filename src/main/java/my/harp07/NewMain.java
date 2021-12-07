@@ -15,7 +15,7 @@ public class NewMain {
             System.out.println(receive(tc));
             send(tc,"romka");
             System.out.println(receive(tc));
-            send(tc,"coldrom");
+            send(tc,"romka");
             System.out.println(receive(tc));
             send(tc,"df -m");
             System.out.println(receive(tc));
